@@ -1,0 +1,227 @@
+@model DiyetisyenApp.Models.ViewModels.BmrCalculationViewModel
+
+@{
+    ViewData["Title"] = "BMH & BKI Hesaplama";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    :root {
+        --primary: #4f46e5;
+        --secondary: #64748b;
+        --card-bg: #ffffff;
+        --input-bg: #f8fafc;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f1f5f9;
+        color: #1e293b;
+    }
+
+    .calc-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 0 20px;
+    }
+
+    .main-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        overflow: hidden;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .card-header {
+        background: white;
+        padding: 25px;
+        border-bottom: 1px solid #f1f5f9;
+        text-align: center;
+    }
+
+    .card-header h2 {
+        font-weight: 700;
+        margin: 0;
+        color: var(--primary);
+        font-size: 1.5rem;
+    }
+
+    .input-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        padding: 30px;
+    }
+
+    .input-group-custom {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group-custom label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--secondary);
+    }
+
+    .input-group-custom input,
+    .input-group-custom select {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        background: var(--input-bg);
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .input-group-custom input:focus,
+    .input-group-custom select:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    .btn-submit {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
+        font-weight: 700;
+        width: 100%;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+
+    .btn-submit:hover {
+        background: #4338ca;
+        transform: translateY(-2px);
+    }
+
+    .result-section {
+        background: #f8fafc;
+        padding: 30px;
+        border-top: 2px dashed #e2e8f0;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        color: var(--secondary);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+</style>
+
+<div class="calc-container">
+    <div class="main-card">
+        <div class="card-header">
+            <h2><i class="bi bi-heart-pulse-fill me-2"></i>BMH & BKI Hesaplama</h2>
+        </div>
+
+        <form method="post">
+            <div class="input-grid">
+
+                <div class="input-group-custom">
+                    <label>Yaş</label>
+                    <input asp-for="Age" type="number" step="1" min="0" onkeydown="return event.key !== '.' && event.key !== '-'" class="form-control" placeholder="Örn: 30" />
+                </div>
+
+                <div class="input-group-custom">
+                    <label>Boy (cm)</label>
+                    <input asp-for="Height" type="number" step="0.1" min="0" onkeydown="return event.key !== '.' && event.key !== '-'" class="form-control" placeholder="Örn: 170" />
+                </div>
+
+                <div class="input-group-custom">
+                    <label>Kilo (kg)</label>
+                    <input asp-for="Weight"type="number" step="0.1" min="0" onkeydown="return event.key !== '.' && event.key !== '-'" class="form-control" placeholder="Örn: 70" />
+                </div>
+
+                <div class="input-group-custom">
+                    <label>Cinsiyet</label>
+                    <select asp-for="Gender">
+                        <option value="">Seçiniz</option>
+                        <option value="Male">Erkek</option>
+                        <option value="Female">Kadın</option>
+                    </select>
+                </div>
+
+                <div class="input-group-custom">
+                    <label>Fiziksel Aktivite</label>
+                    <select asp-for="ActivityLevel">
+                        <option value="VeryLight">Çok Hafif (1.2)</option>
+                        <option value="Light">Hafif (1.375)</option>
+                        <option value="Moderate">Orta (1.55)</option>
+                        <option value="Heavy">Ağır (1.725)</option>
+                        <option value="VeryHeavy">Çok Ağır (1.9)</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="px-5 pb-5">
+                <button type="submit" class="btn-submit">
+                    <i class="bi bi-calculator"></i> HESAPLA
+                </button>
+            </div>
+        </form>
+
+        @if (Model != null && Model.BMI > 0)
+        {
+            <div class="result-section">
+                <h4 class="text-center fw-bold mb-4">Hesaplama Sonuçları</h4>
+
+                <div class="stats-row">
+
+                    <div class="stat-card">
+                        <span class="stat-label">BKI (BMI)</span>
+                        <span class="stat-value">@Model.BMI.ToString("0.0")</span>
+                        <small class="fw-bold">@Model.BmiCategory</small>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">BMH (Harris-Benedict)</span>
+                        <span class="stat-value">@Model.HarrisBenedict.ToString("0") kcal</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">BMH (Mifflin)</span>
+                        <span class="stat-value">@Model.Mifflin.ToString("0") kcal</span>
+                    </div>
+
+                    <div class="stat-card">
+                        <span class="stat-label">Toplam Enerji (TDEE)</span>
+                        <span class="stat-value">@Model.TotalEnergyExpenditure.ToString("0") kcal</span>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

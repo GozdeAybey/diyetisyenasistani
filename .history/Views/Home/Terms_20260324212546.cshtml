@@ -1,0 +1,139 @@
+@{
+    ViewData["Title"] = "Kullanım Şartları";
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background: #f3f4f6;
+        color: #1f2937;
+    }
+
+    .terms-container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+    }
+
+    .header-box {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .header-box h1 {
+        font-weight: 700;
+        font-size: 2.2rem;
+    }
+
+    .header-box p {
+        color: #6b7280;
+    }
+
+    .terms-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        border-left: 5px solid #6366f1;
+    }
+
+    .terms-card h4 {
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .terms-card p {
+        font-size: 0.95rem;
+        color: #374151;
+    }
+
+    .terms-card ul {
+        padding-left: 18px;
+    }
+
+    .highlight {
+        background: #eef2ff;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+</style>
+
+<div class="terms-container">
+
+    <div class="header-box">
+        <h1><i class="bi bi-file-text"></i> Kullanım Şartları</h1>
+        <p>Son güncelleme: @DateTime.Now.ToString("dd.MM.yyyy")</p>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-info-circle"></i> Genel Şartlar</h4>
+        <p>
+            DiyetisyenApp uygulamasını kullanan tüm kullanıcılar aşağıdaki kullanım şartlarını kabul etmiş sayılır.
+            Bu şartlar, uygulamanın kullanımına ilişkin kuralları belirler.
+        </p>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-person-badge"></i> Kullanım Amacı</h4>
+        <p>
+            DiyetisyenApp, diyetisyenler ve sağlık profesyonelleri için geliştirilmiş bir hesaplama aracıdır.
+        </p>
+        <ul>
+            <li>Makro besin hesaplamaları</li>
+            <li>Kalori analizleri</li>
+            <li>BMH ve BKI hesaplamaları</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-exclamation-triangle"></i> Sorumluluk Reddi</h4>
+        <p class="highlight">
+            Uygulama üzerinden sunulan tüm sonuçlar bilgilendirme amaçlıdır.
+            Tıbbi teşhis veya tedavi yerine geçmez.
+        </p>
+        <p>
+            Nihai değerlendirme kullanıcıya aittir.
+        </p>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-shield"></i> Kullanıcı Sorumluluğu</h4>
+        <ul>
+            <li>Kullanıcı, girilen verilerin doğruluğundan sorumludur</li>
+            <li>Yanlış veri girişinden doğabilecek sonuçlardan uygulama sorumlu değildir</li>
+            <li>Uygulama kötüye kullanılamaz</li>
+        </ul>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-cpu"></i> Hizmet Sürekliliği</h4>
+        <p>
+            DiyetisyenApp kesintisiz hizmet sunmayı hedefler, ancak teknik sorunlar nedeniyle geçici kesintiler yaşanabilir.
+        </p>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-arrow-repeat"></i> Değişiklikler</h4>
+        <p>
+            Kullanım şartları zaman zaman güncellenebilir. Güncellemeler bu sayfada yayınlanır.
+        </p>
+    </div>
+
+    <div class="terms-card">
+        <h4><i class="bi bi-envelope"></i> İletişim</h4>
+        <p>
+            Sorularınız için:
+            <br />
+            <strong>gozdeaybeyy@gmail.com</strong>
+        </p>
+    </div>
+
+</div>

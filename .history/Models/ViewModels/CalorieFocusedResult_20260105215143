@@ -1,0 +1,17 @@
+namespace DiyetisyenApp.Models.ViewModels;
+
+public class CalorieFocusedResult
+{
+    // 🔹 Ana kolon
+    public int TotalCalories { get; set; }
+
+    // 🔹 Gram değerleri
+    public int Carbs { get; set; }
+    public int Protein { get; set; }
+    public int Fat { get; set; }
+
+    // 🔹 Yüzdelik dağılımlar
+    public double CarbsPercent { get; set; }
+    public double ProteinPercent { get; set; }
+    public double FatPercent { get; set; }
+}

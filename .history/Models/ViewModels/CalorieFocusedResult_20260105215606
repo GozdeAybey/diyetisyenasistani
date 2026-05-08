@@ -1,0 +1,15 @@
+namespace DiyetisyenApp.Models.ViewModels
+{
+    public class CalorieFocusedResult
+    {
+        public int TotalCalories { get; set; }
+
+        public double Carbs { get; set; }
+        public double Protein { get; set; }
+        public double Fat { get; set; }
+
+        public double CarbsPercent { get; set; }
+        public double ProteinPercent { get; set; }
+        public double FatPercent { get; set; }
+    }
+}

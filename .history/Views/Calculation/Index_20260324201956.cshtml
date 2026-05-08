@@ -1,0 +1,193 @@
+@model DiyetisyenApp.Models.ViewModels.CalculationRequest
+@using DiyetisyenApp.Models.ViewModels
+@using DiyetisyenApp.Models.Domain
+
+@{
+    ViewData["Title"] = "Kalori & Değişim Hesaplama";
+    var foodGroups = ViewBag.FoodGroups as List<FoodGroup>;
+    var table = ViewBag.Table as List<MacroFocusRow>;
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    :root {
+        --primary: #4f46e5;
+        --success: #10b981;
+        --kh-color: #f59e0b;
+        --protein-color: #ef4444;
+        --fat-color: #3b82f6;
+        --bg-main: #f3f4f6;
+    }
+
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); }
+
+    .page-container { max-width: 1200px; margin: 40px auto; }
+
+    .glass-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .btn-calculate {
+        background: var(--primary);
+        color: white;
+        padding: 12px;
+        border-radius: 10px;
+        width: 100%;
+        border: none;
+    }
+</style>
+
+<div class="page-container">
+
+    <h2 class="mb-4">
+        <i class="bi bi-calculator"></i> Kalori & Değişim Hesaplama
+    </h2>
+
+    <form asp-action="Index" method="post" id="calcForm">
+        <div class="row">
+
+            <!-- 🔥 KALORİ -->
+            <div class="col-md-4">
+                <div class="glass-card">
+                    <h5>Kalori Aralığı</h5>
+
+                    <label>Minimum</label>
+                    <input asp-for="MinCalories"
+                           type="number"
+                           min="0"
+                           class="form-control-custom" />
+
+                    <label class="mt-2">Maximum</label>
+                    <input asp-for="MaxCalories"
+                           type="number"
+                           min="0"
+                           class="form-control-custom" />
+                </div>
+            </div>
+
+            <!-- 🔥 DEĞİŞİMLER -->
+            <div class="col-md-8">
+                <div class="glass-card">
+                    <h5>Besin Grupları</h5>
+
+                    @if (foodGroups != null)
+                    {
+                        for (int i = 0; i < foodGroups.Count; i++)
+                        {
+                            <div class="mb-2">
+                                <label>@foodGroups[i].Name</label>
+
+                                <input type="hidden" name="ExchangeRanges[@i].FoodGroupId" value="@foodGroups[i].Id" />
+
+                                <div class="d-flex gap-2">
+                                    <input asp-for="ExchangeRanges[@i].Min"
+                                           type="number"
+                                           min="0"
+                                           step="1"
+                                           oninput="this.value = Math.max(0, this.value)"
+                                           class="form-control-custom"
+                                           placeholder="Min" />
+
+                                    <input asp-for="ExchangeRanges[@i].Max"
+                                           type="number"
+                                           min="0"
+                                           step="1"
+                                           oninput="this.value = Math.max(0, this.value)"
+                                           class="form-control-custom"
+                                           placeholder="Max" />
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <button type="submit" class="btn-calculate mt-3">
+                        Hesapla
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- 🔥 TEMİZLE -->
+    <form asp-action="Clear" method="post">
+        <button class="btn btn-danger mt-3">Temizle</button>
+    </form>
+
+    <!-- 🔥 SONUÇ -->
+    @if (table != null && table.Any())
+    {
+        <div class="glass-card mt-4">
+            <h5>Sonuçlar</h5>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Kalori</th>
+                        <th>KH</th>
+                        <th>Protein</th>
+                        <th>Yağ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in table)
+                    {
+                        <tr>
+                            <td>@r.TotalCalories</td>
+                            <td>@r.Carbs</td>
+                            <td>@r.Protein</td>
+                            <td>@r.Fat</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById("calcForm").addEventListener("submit", function (e) {
+
+        let min = document.querySelector('[name="MinCalories"]').value;
+        let max = document.querySelector('[name="MaxCalories"]').value;
+
+        if (!min || !max) {
+            e.preventDefault();
+            Swal.fire("Hata", "Kalori alanları boş olamaz", "error");
+            return;
+        }
+
+        if (parseInt(min) > parseInt(max)) {
+            e.preventDefault();
+            Swal.fire("Hata", "Minimum kalori maksimumdan büyük olamaz", "error");
+            return;
+        }
+    });
+</script>
+
+@if (ViewBag.NoResult != null && ViewBag.NoResult == true)
+{
+    <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Sonuç Bulunamadı',
+            text: 'Bu aralıkta kombinasyon yok',
+        });
+    </script>
+}

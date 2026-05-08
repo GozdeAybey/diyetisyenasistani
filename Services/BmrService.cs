@@ -1,0 +1,71 @@
+using DiyetisyenApp.Models.ViewModels;
+
+namespace DiyetisyenApp.Services;
+
+public class BmrService
+{
+    public BmrCalculationViewModel Calculate(BmrCalculationViewModel model)
+    {
+        // 🔹 BMI
+        double heightMeter = model.Height / 100.0;
+        model.BMI = model.Weight / (heightMeter * heightMeter);
+        // 🔹 BMI Sınıflandırma
+        if (model.BMI < 18.5)
+            model.BmiCategory = "Zayıf";
+        else if (model.BMI < 25)
+            model.BmiCategory = "Normal";
+        else if (model.BMI < 30)
+            model.BmiCategory = "Fazla Kilolu";
+        else
+            model.BmiCategory = "Obez";
+        // 🔹 Harris-Benedict
+        if (model.Gender == "Male")
+        {
+            model.HarrisBenedict =
+                66.47+
+                (13.75 * model.Weight) +
+                (5 * model.Height) -
+                (6.76 * model.Age);
+        }
+        else
+        {
+            model.HarrisBenedict =
+                665.10+
+                (9.56 * model.Weight) +
+                (1.85 * model.Height) -
+                (4.68 * model.Age);
+        }
+
+        // 🔹 Mifflin-St Jeor
+        if (model.Gender == "Male")
+        {
+            model.Mifflin =
+                (10 * model.Weight) +
+                (6.25 * model.Height) -
+                (5 * model.Age) + 5;
+        }
+        else
+        {
+            model.Mifflin =
+                (10 * model.Weight) +
+                (6.25 * model.Height) -
+                (5 * model.Age) - 161;
+        }
+
+        // 🔹 Aktivite Katsayısı
+        double activityMultiplier = model.ActivityLevel switch
+        {
+            "VeryLight" => 1.2,
+            "Light" => 1.375,
+            "Moderate" => 1.55,
+            "Heavy" => 1.725,
+            "VeryHeavy" => 1.9,
+            _ => 1.2
+        };
+
+        model.TotalEnergyExpenditure =
+            model.HarrisBenedict * activityMultiplier;
+
+        return model;
+    }
+}

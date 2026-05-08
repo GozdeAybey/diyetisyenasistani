@@ -1,0 +1,113 @@
+using DiyetisyenApp.Models.Domain;
+
+namespace DiyetisyenApp.Services;
+
+public class FoodGroupService
+{
+    // --------------------------------------------------
+    // 1️⃣ DEĞİŞİM GRUPLARI (TEK KAYNAK)
+    // --------------------------------------------------
+    public List<FoodGroup> GetFoodGroups()
+    {
+        return new List<FoodGroup>
+        {
+            new()
+            {
+                Id = 1,
+                Name = "Ekmek Yerine Geçenler",
+                CarbsPerExchange = 15,
+                ProteinPerExchange = 2,
+                FatPerExchange = 0
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Et",
+                CarbsPerExchange = 0,
+                ProteinPerExchange = 6,
+                FatPerExchange = 5
+            },
+            new()
+            {
+                Id = 3,
+                Name = "Süt",
+                CarbsPerExchange = 9,
+                ProteinPerExchange = 6,
+                FatPerExchange = 6
+            },
+            new()
+            {
+                Id = 4,
+                Name = "Sebze",
+                CarbsPerExchange = 6,
+                ProteinPerExchange = 2,
+                FatPerExchange = 0
+            },
+            new()
+            {
+                Id = 5,
+                Name = "Meyve",
+                CarbsPerExchange = 15,
+                ProteinPerExchange = 0,
+                FatPerExchange = 0
+            },
+            new()
+            {
+                Id = 6,
+                Name = "Yağ",
+                CarbsPerExchange = 0,
+                ProteinPerExchange = 0,
+                FatPerExchange = 5
+            },
+            new()
+            {
+                Id = 7,
+                Name = "Yağlı Tohum",
+                CarbsPerExchange = 0,
+                ProteinPerExchange = 2,
+                FatPerExchange = 5
+            }
+        };
+    }
+
+    // --------------------------------------------------
+    // 2️⃣ TEK DEĞİŞİM SAYFASI HESABI
+    // --------------------------------------------------
+    public NutritionSummary CalculateSingleExchangeSummary(
+        int milk,
+        int meat,
+        int eyg,
+        int vegetable,
+        int fruit,
+        int fat)
+    {
+        var foodGroups = GetFoodGroups();
+        var result = new NutritionSummary();
+
+        Add(result, foodGroups, "Süt", milk);
+        Add(result, foodGroups, "Et", meat);
+        Add(result, foodGroups, "Ekmek Yerine Geçenler", eyg);
+        Add(result, foodGroups, "Sebze", vegetable);
+        Add(result, foodGroups, "Meyve", fruit);
+        Add(result, foodGroups, "Yağ", fat);
+
+        result.CalculatePercentages();
+        return result;
+    }
+
+    // --------------------------------------------------
+    // 3️⃣ YARDIMCI TOPLAMA METODU
+    // --------------------------------------------------
+    private void Add(
+        NutritionSummary total,
+        List<FoodGroup> foodGroups,
+        string groupName,
+        int exchangeCount)
+    {
+        var group = foodGroups.First(f => f.Name == groupName);
+
+        total.Carbs += group.CarbsPerExchange * exchangeCount;
+        total.Protein += group.ProteinPerExchange * exchangeCount;
+        total.Fat += group.FatPerExchange * exchangeCount;
+    }
+}
