@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DiyetisyenApp.Data;
+using DiyetisyenApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddScoped<FoodGroupService>();
+
+builder.Services.AddScoped<CalculationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,10 +38,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication(); 
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "80";
+
+app.Urls.Add($"http://0.0.0.0:{port}");
 app.MapRazorPages();
 
 app.Run();
