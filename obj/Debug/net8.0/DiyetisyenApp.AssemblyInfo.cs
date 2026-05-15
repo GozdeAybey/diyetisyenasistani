@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DiyetisyenApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+52c13e610a2a7c107fcb0ff971031fc87c353ff5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddcd8e57a4b9dc9cb023ad23d84c945d545640c9")]
 [assembly: System.Reflection.AssemblyProductAttribute("DiyetisyenApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DiyetisyenApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
